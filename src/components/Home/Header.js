@@ -127,7 +127,7 @@ function Header() {
             Edit
           </Typography>
           <RingHover className="cursor-pointer border-solid border-primary border-[1px] rounded-full p-2 flex items-center h-fit w-fit ">
-            <NotificationsNoneOutlinedIcon className=" h-fit w-6 text-primary " />
+            <NotificationsNoneOutlinedIcon className=" h-6 w-6 text-primary " />
           </RingHover>
           <div className="flex items-center ml-3 text-gray-400 rounded-2xl bg-gray-100 lg:px-6 lg:py-2 px-3 py-3 ">
             <DateRangeOutlinedIcon />
@@ -150,7 +150,7 @@ function Header() {
           </div>
         </div>
       </div>
-      <div className="flex overflow-auto pb-4 my-2">
+      <div className="flex overflow-auto pb-2">
         <div className="text-[#35AC8C] flex items-center mr-6  ">
           <FlashOnIcon />
           <Typography

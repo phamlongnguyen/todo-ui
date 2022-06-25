@@ -35,6 +35,7 @@ module.exports = {
       blue: colors.blue,
       green: colors.green,
       purple: colors.purple,
+      violet: colors.violet,
       primary: {
         DEFAULT: '#655BDC',
         100: '#A29BFE',

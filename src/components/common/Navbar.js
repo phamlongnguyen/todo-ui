@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import React from 'react';
-import { Link, useMatch, useResolvedPath } from 'react-router-dom';
+import { Link, useLocation, useMatch, useResolvedPath } from 'react-router-dom';
 import { MENU_NAV_BAR } from '../../utils/constant';
 
 function Navbar() {
@@ -43,12 +43,13 @@ export default Navbar;
 
 const ItemNav = ({ href = '', label = '', icon }) => {
   const resolved = useResolvedPath(href);
+  const { pathname } = useLocation();
   const match = useMatch({ path: resolved.pathname, end: true });
   return (
     <Link
       to={href}
       className={`no-underline flex items-center justify-center md:p-4 p-2 md:justify-start hover:text-primary-100  cursor-pointer border-l-transparent border-0 border-l-4 border-solid hover:border-l-primary-100 hover:bg-gray-100 ${
-        match
+        match || (pathname === '/' && resolved.pathname === '/dashboard')
           ? 'text-primary-100  border-l-primary-100 '
           : 'text-gray-400  border-l-transparent'
       }`}
