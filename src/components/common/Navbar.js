@@ -5,7 +5,7 @@ import { MENU_NAV_BAR } from '../../utils/constant';
 
 function Navbar() {
   return (
-    <div className="flex flex-col h-screen shadow-lg  w-fit relative z-10 ">
+    <div className="flex flex-col h-screen shadow-lg  w-fit  z-10 fixed top-0 ">
       <div className="h-full w-fit overflow-y-auto flex flex-col">
         <div className="flex items-center border-b  border-0 border-solid border-b-gray-300 py-4 md:px-4 px-2 justify-center">
           <img
