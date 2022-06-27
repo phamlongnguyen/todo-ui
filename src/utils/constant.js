@@ -61,24 +61,29 @@ export const MENU_NAV_BAR = [
 
 export const PRIORITY_LIST = {
   1: {
+    id: 1,
     label: 'Highest',
     icon: <DoubleArrowRoundedIcon className="-rotate-90 text-[#F67452]" />,
   },
   2: {
+    id: 2,
     label: 'High',
     icon: (
       <KeyboardArrowDownRoundedIcon className="rotate-180 text-[#F78F73]" />
     ),
   },
   3: {
+    id: 3,
     label: 'Medium',
     icon: <DragHandleRoundedIcon className="text-[#F8AB04]" />,
   },
   4: {
+    id: 4,
     label: 'Low',
     icon: <KeyboardArrowDownRoundedIcon className="text-[#2B65FF]" />,
   },
   5: {
+    id: 5,
     label: 'Lowest',
     icon: <DoubleArrowRoundedIcon className="rotate-90 text-[#3284FF]" />,
   },

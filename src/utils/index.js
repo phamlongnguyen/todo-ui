@@ -1,5 +1,6 @@
 export const sortByDateAndPriority = (data) => {
-  data.sort((task1, task2) => {
+  const newData = [...data];
+  newData?.sort?.((task1, task2) => {
     if (task1.priority > task2.priority) return 1;
     if (task1.priority < task2.priority) return -1;
 
@@ -15,7 +16,7 @@ export const sortByDateAndPriority = (data) => {
       return -1;
     return 1;
   });
-  return data;
+  return newData || [];
 };
 
 export const formatDate = (date) => {

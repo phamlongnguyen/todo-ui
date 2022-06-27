@@ -1,20 +1,13 @@
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { v4 as uuidv4 } from 'uuid';
-import React, { memo, useMemo, useState } from 'react';
-import {
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  MenuList,
-  Popover,
-  Typography,
-} from '@mui/material';
-import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
-import { PRIORITY_LIST } from '../../utils/constant';
+import React, { useEffect } from 'react';
+import { Typography } from '@mui/material';
 import { users } from '../../mock';
-import { formatDate, sortByDateAndPriority } from '../../utils';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { sortByDateAndPriority } from '../../utils';
+import ItemTask from './ItemTask';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { initTodo, updateColumns } from '../../store/reducer';
 
 const itemsFromBackend = [
   {
@@ -76,26 +69,7 @@ const itemsFromBackend = [
   },
 ];
 
-const columnsFromBackend = {
-  [uuidv4()]: {
-    name: 'To do',
-    items: sortByDateAndPriority(itemsFromBackend),
-  },
-  [uuidv4()]: {
-    name: 'On Hold',
-    items: [],
-  },
-  [uuidv4()]: {
-    name: 'In Progress',
-    items: [],
-  },
-  [uuidv4()]: {
-    name: 'Done',
-    items: [],
-  },
-};
-
-const onDragEnd = (result, columns, setColumns) => {
+const onDragEnd = (result, columns) => {
   if (!result.destination) return;
   const { source, destination } = result;
 
@@ -106,17 +80,17 @@ const onDragEnd = (result, columns, setColumns) => {
     const destItems = [...destColumn.items];
     const [removed] = sourceItems.splice(source.index, 1);
     destItems.splice(destination.index, 0, removed);
-    sortByDateAndPriority(sourceItems);
-    sortByDateAndPriority(destItems);
-    setColumns({
+    const newSource = sortByDateAndPriority(sourceItems);
+    const newItems = sortByDateAndPriority(destItems);
+    return updateColumns({
       ...columns,
       [source.droppableId]: {
         ...sourceColumn,
-        items: sourceItems,
+        items: newSource,
       },
       [destination.droppableId]: {
         ...destColumn,
-        items: destItems,
+        items: newItems,
       },
     });
   } else {
@@ -124,26 +98,37 @@ const onDragEnd = (result, columns, setColumns) => {
     const copiedItems = [...column.items];
     const [removed] = copiedItems.splice(source.index, 1);
     copiedItems.splice(destination.index, 0, removed);
-    sortByDateAndPriority(copiedItems);
-    setColumns({
+    const newCopiedItems = sortByDateAndPriority(copiedItems);
+    return updateColumns({
       ...columns,
       [source.droppableId]: {
         ...column,
-        items: copiedItems,
+        items: newCopiedItems,
       },
     });
   }
 };
 
 function DropPanel() {
-  const [columns, setColumns] = useState(columnsFromBackend);
+  const columnsTasks = useSelector((state) => state.columnsTask);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const tempCol = localStorage.getItem('columnsTask');
+    console.log('=====console===== >> ', JSON.parse(tempCol));
+    dispatch(
+      tempCol
+        ? updateColumns(JSON.parse(tempCol))
+        : initTodo(sortByDateAndPriority(itemsFromBackend)),
+    );
+  }, [dispatch]);
   return (
     <div className="w-full h-full">
       <div className="w-full h-full flex py-2">
         <DragDropContext
-          onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+          onDragEnd={(result) => dispatch(onDragEnd(result, columnsTasks))}
         >
-          {Object.entries(columns).map(([columnId, column], index) => {
+          {Object.entries(columnsTasks).map(([columnId, column], index) => {
             return (
               <div
                 className="w-1/4 min-w-[250px] mx-2 bg-gray-100 rounded flex flex-col "
@@ -203,100 +188,3 @@ function DropPanel() {
 }
 
 export default DropPanel;
-
-const ItemTask = memo(({ provided, snapshot, item }) => {
-  const itemMemo = useMemo(() => item, [item]);
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  return (
-    <div
-      ref={provided.innerRef}
-      {...provided.draggableProps}
-      {...provided.dragHandleProps}
-      className={`text-black font-semibold rounded ${
-        snapshot.isDragging ? 'bg-violet-200' : 'bg-white'
-      }`}
-      style={{
-        // userSelect: 'none',
-        padding: 16,
-        margin: '0 0 8px 0',
-        minHeight: '50px',
-        // backgroundColor: snapshot.isDragging
-        //   ? '#263B4A'
-        //   : '#456C86',
-        ...provided.draggableProps.style,
-      }}
-    >
-      <div className="flex justify-between">
-        <Typography variant="subtitle1 truncate"> {item.title}</Typography>
-        <Popover
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-        >
-          <MenuList>
-            <MenuItem>
-              <ListItemIcon>
-                <RemoveRedEyeIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>View</ListItemText>
-            </MenuItem>
-            <MenuItem>
-              <ListItemIcon>
-                <HighlightOffIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Delete</ListItemText>
-            </MenuItem>
-          </MenuList>
-        </Popover>
-        <div className="pl-4">
-          <MoreHorizRoundedIcon onClick={handleClick} />
-        </div>
-      </div>
-      <InfoItem item={itemMemo} />
-    </div>
-  );
-});
-
-const InfoItem = memo(({ item }) => {
-  const listAssignees =
-    item.assignee.length >= 2 ? item.assignee.slice(0, 2) : item.assignee;
-  return (
-    <div className="flex justify-between flex-wrap ">
-      <div className="flex  pt-4">
-        {listAssignees.map((e) => {
-          return (
-            <div key={e.id}>
-              <img src={e.icon} alt={e.name} className="h-7 w-7 rounded-full" />
-            </div>
-          );
-        })}
-        {item.assignee.length - 2 > 0 && (
-          <div className="h-7 w-7 bg-gray-200 text-gray-400 rounded-full flex items-center justify-center text-3xs">
-            +{item.assignee.length - 2}
-          </div>
-        )}
-      </div>
-      <div className="pl-4  pt-4 flex">
-        <div className="whitespace-nowrap text-3xs text-gray-400">
-          {formatDate(item.estimateTime)}
-        </div>
-        <div className="pl-4">{PRIORITY_LIST[item.priority].icon}</div>
-      </div>
-    </div>
-  );
-});
