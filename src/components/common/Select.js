@@ -1,162 +1,95 @@
-import styled from '@emotion/styled';
-import SelectUnstyled, {
-  selectUnstyledClasses,
-} from '@mui/base/SelectUnstyled';
-import OptionUnstyled, {
-  optionUnstyledClasses,
-} from '@mui/base/OptionUnstyled';
-import { MultiSelectUnstyled, PopperUnstyled } from '@mui/base';
 import React from 'react';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import { useEffect } from 'react';
+import { Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-const StyledButton = styled('button')(
-  () => `
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 0.875rem;
-  box-sizing: border-box;
-  min-height: calc(1.5em + 22px);
-  min-width: 200px;
-  border: 1px solid  #CDD2D7;
-  border-radius: 0.75em;
-  margin: 0.5em;
-  padding: 10px;
-  text-align: left;
-  line-height: 1.5;
-  color: #10151a;
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
-  &:hover {
-    background:#E7EBF0;
-    border-color: #B2BAC2;
-  }
+const SelectCus = styled(Select)(({ multiple }) => ({
+  minHeight: 20,
+  width: 'fit-content',
+  '>div': {
+    display: 'flex',
+    flexWrap: 'wrap',
+    padding: multiple ? '8px' : '5px',
+    minWidth: '100px',
+    '>div': {
+      padding: '0px 3px',
+    },
+  },
+}));
 
-  &.${selectUnstyledClasses.focusVisible} {
-    outline: 3px solid #DAECFF;
-  }
+const MenuItemCus = styled(MenuItem)(({ multiple }) => ({
+  height: '50px',
+}));
 
-  &.${selectUnstyledClasses.expanded} {
-    &::after {
-      content: '▴';
-    }
-  }
-
-  &::after {
-    content: '▾';
-    float: right;
-  }
-
-  & img {
-    margin-right: 10px;
-  }
-  `,
-);
-
-const StyledListbox = styled('ul')(
-  () => `
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 0.875rem;
-  box-sizing: border-box;
-  padding: 5px;
-  margin: 10px 0;
-  min-width: 200px;
-  max-height: 400px;
-  background: #fff;
-  border: 1px solid #CDD2D7;
-  border-radius: 0.75em;
-  color: #1A2027;
-  overflow: auto;
-  outline: 0px;
-  `,
-);
-
-const StyledOption = styled(OptionUnstyled)(
-  () => `
-  list-style: none;
-  padding: 8px;
-  border-radius: 0.45em;
-  cursor: default;
-  display:flex;
-  align-items: center;
-  margin: 5px 0px;
-
-  &:last-of-type {
-    border-bottom: none;
-  }
-
-  &.${optionUnstyledClasses.selected} {
-    background-color: #DAECFF;
-    color: #003A75;
-  }
-
-  &.${optionUnstyledClasses.highlighted} {
-    background-color: #E7EBF0;
-    color: #1A2027;
-  }
-
-  &.${optionUnstyledClasses.highlighted}.${optionUnstyledClasses.selected} {
-    background-color: #DAECFF;
-    color: #003A75;
-  }
-
-  &.${optionUnstyledClasses.disabled} {
-    color: #B2BAC2;
-  }
-
-  &:hover:not(.${optionUnstyledClasses.disabled}) {
-    background-color: #E7EBF0;
-    color: #1A2027;
-  }
-
-  & img {
-    margin-right: 10px;
-  }
-  `,
-);
-const StyledPopper = styled(PopperUnstyled)`
-  z-index: 1;
-`;
-
-const CustomSelect = React.forwardRef(function CustomSelect(props, ref) {
-  const components = {
-    Root: StyledButton,
-    Listbox: StyledListbox,
-    Popper: StyledPopper,
-    ...props.components,
-  };
-  return props.isMultiple ? (
-    <MultiSelectUnstyled {...props} ref={ref} components={components} />
-  ) : (
-    <SelectUnstyled {...props} ref={ref} components={components} />
-  );
-});
-function Select({
+function TSelect({
   options = [],
   preifx = 'name',
   onChange = () => {},
   defaultValue,
   isMultiple = false,
 }) {
+  const [personName, setPersonName] = React.useState([]);
+
+  useEffect(() => {
+    setPersonName(
+      isMultiple && typeof defaultValue !== 'object' ? [] : defaultValue,
+    );
+  }, [defaultValue, isMultiple]);
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(typeof value === 'string' ? value.split(',') : value);
+    onChange(value);
+  };
   return (
-    <CustomSelect
-      defaultValue={defaultValue}
-      onChange={onChange}
-      isMultiple={isMultiple}
+    <SelectCus
+      labelId="demo-multiple-name-label"
+      id="demo-multiple-name"
+      multiple={isMultiple}
+      value={personName}
+      onChange={handleChange}
+      input={<OutlinedInput label="Name" />}
+      MenuProps={MenuProps}
     >
       {options.map((c) => (
-        <StyledOption key={c.id} value={c.id} label={c[preifx]}>
-          {typeof c.icon === 'string' ? (
-            <img
-              loading="lazy"
-              width="20"
-              src={c.icon}
-              alt={`Flag of ${c[preifx]}`}
-            />
-          ) : (
-            <div className="mr-4"> {c.icon}</div>
-          )}
-          {c[preifx]}
-        </StyledOption>
+        <MenuItemCus key={c.id} value={c.id}>
+          <div className="flex items-center">
+            {typeof c.icon === 'string' ? (
+              <img
+                loading="lazy"
+                width="30"
+                src={c.icon}
+                alt={`Flag of ${c[preifx]}`}
+                className="rounded-full"
+              />
+            ) : (
+              <div className="mx-2 translate-y-1"> {c.icon}</div>
+            )}
+            <Typography variant="subtitle2" className="ml-2">
+              {' '}
+              {c[preifx]}
+            </Typography>
+          </div>
+        </MenuItemCus>
       ))}
-    </CustomSelect>
+    </SelectCus>
   );
 }
 
-export default Select;
+export default TSelect;

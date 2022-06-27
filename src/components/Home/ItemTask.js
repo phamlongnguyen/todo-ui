@@ -5,7 +5,7 @@ import { PRIORITY_LIST } from '../../utils/constant';
 import PopupOption from './popup';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 
-const ItemTask = memo(({ provided, snapshot, item }) => {
+const ItemTask = memo(({ provided, snapshot, item, column }) => {
   const itemMemo = useMemo(() => item, [item]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -32,7 +32,12 @@ const ItemTask = memo(({ provided, snapshot, item }) => {
     >
       <div className="flex justify-between">
         <Typography variant="subtitle1 truncate"> {item.title}</Typography>
-        <PopupOption anchorEl={anchorEl} handleClose={handleClose} />
+        <PopupOption
+          anchorEl={anchorEl}
+          handleClose={handleClose}
+          item={item}
+          column={column}
+        />
         <div className="pl-4">
           <MoreHorizRoundedIcon onClick={handleClick} />
         </div>

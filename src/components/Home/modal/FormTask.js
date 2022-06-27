@@ -16,9 +16,13 @@ import { PRIORITY_LIST } from '../../../utils/constant';
 import Select from '../../common/Select';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { useSnackbar } from 'notistack';
+import { useDispatch } from 'react-redux';
+import { addTodoTask, updateTask } from '../../../store/reducer/columnsTask';
+import format from 'date-fns/format';
+import { useSelector } from 'react-redux';
 
 const ColorButton = styled(Button)(() => ({
   color: '#ffffff',
@@ -40,6 +44,8 @@ const TextFieldCus = styled(TextField)(() => ({
 }));
 
 function FormTask({ open, handleClose = () => {} }) {
+  const dispatch = useDispatch();
+  const config = useSelector((state) => state.config);
   const [date, setDate] = useState(new Date());
   const [assignees, setAssignees] = useState([]);
   const [priority, setPriority] = useState(5);
@@ -49,29 +55,54 @@ function FormTask({ open, handleClose = () => {} }) {
 
   const handleChangeDate = (e) => setDate(e);
   const handleChangeAssignees = (e) => {
-    const newAssignees = e.map((e) => users.find((el) => el.id === e));
-    setAssignees(newAssignees);
+    setAssignees(e);
   };
   const handleChangePriority = (e) => setPriority(e);
 
+  useEffect(() => {
+    if (!open) {
+      setPriority(5);
+      setAssignees([]);
+      setDate(new Date());
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (config.data?.task) {
+      const { priority: tempPrior, assignee, estimateTime } = config.data?.task;
+      setPriority(tempPrior);
+      setAssignees(assignee?.map?.((e) => e.id) || []);
+      setDate(new Date(estimateTime));
+    }
+  }, [config.data]);
+
   const onSubmit = () => {
     const body = {
-      id: uuidv4(),
+      id: config.data?.task?.id || uuidv4(),
       content: contentRef.current.value,
       title: titleRef.current.value,
-      estimateTime: date,
+      estimateTime: format(date, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
       priority,
-      assignee: assignees,
+      assignee: assignees.map((e) => users.find((el) => el.id === e)),
     };
     if (!body.title) {
       enqueueSnackbar('Please enter a title!', { variant: 'error' });
+      return;
     }
+    dispatch(
+      config.data?.task?.id
+        ? updateTask({ columnId: config.data.columnId, body })
+        : addTodoTask(body),
+    );
+    handleClose();
   };
 
   return (
     <div>
       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-        <DialogTitle>Create task</DialogTitle>
+        <DialogTitle>
+          {config.data?.task?.id ? 'Update task' : 'Create task'}
+        </DialogTitle>
         <DialogContent>
           <Grid container rowSpacing={1} className="py-6">
             <Grid item xs={12}>
@@ -86,7 +117,7 @@ function FormTask({ open, handleClose = () => {} }) {
                 hiddenLabel
                 inputRef={titleRef}
                 id="filled-hidden-label-normal"
-                defaultValue=""
+                defaultValue={config.data?.task?.title || ''}
                 variant="outlined"
                 className="mt-0  ml-2 rounded-lg"
               />
@@ -100,7 +131,7 @@ function FormTask({ open, handleClose = () => {} }) {
               <TextareaAutosize
                 maxRows={4}
                 ref={contentRef}
-                defaultValue=""
+                defaultValue={config.data?.task?.content || ''}
                 className="w-full min-h-[100px] font-sans rounded-[10px] p-2 ml-2"
               />
             </Grid>
@@ -154,6 +185,7 @@ function FormTask({ open, handleClose = () => {} }) {
             </Grid>
             <Grid item xs={12}>
               <Select
+                defaultValue={assignees}
                 options={users}
                 isMultiple
                 onChange={handleChangeAssignees}
@@ -166,7 +198,7 @@ function FormTask({ open, handleClose = () => {} }) {
             Cancel
           </Button>
           <ColorButton variant="contained" onClick={onSubmit}>
-            Create
+            {config.data?.task?.id ? 'Update ' : 'Create'}
           </ColorButton>
         </DialogActions>
       </Dialog>

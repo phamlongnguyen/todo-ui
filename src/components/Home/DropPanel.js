@@ -7,7 +7,7 @@ import { sortByDateAndPriority } from '../../utils';
 import ItemTask from './ItemTask';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { initTodo, updateColumns } from '../../store/reducer';
+import { initTodo, updateColumns } from '../../store/reducer/columnsTask';
 
 const itemsFromBackend = [
   {
@@ -115,7 +115,6 @@ function DropPanel() {
 
   useEffect(() => {
     const tempCol = localStorage.getItem('columnsTask');
-    console.log('=====console===== >> ', JSON.parse(tempCol));
     dispatch(
       tempCol
         ? updateColumns(JSON.parse(tempCol))
@@ -166,6 +165,7 @@ function DropPanel() {
                                       provided={provided}
                                       snapshot={snapshot}
                                       item={item}
+                                      column={column}
                                     />
                                   );
                                 }}

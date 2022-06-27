@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import todoSlice from './reducer';
+import columnsTask from './reducer/columnsTask';
+import config from './reducer/config';
 const store = configureStore({
   reducer: {
-    columnsTask: todoSlice,
+    columnsTask,
+    config,
   },
 });
 export default store;
