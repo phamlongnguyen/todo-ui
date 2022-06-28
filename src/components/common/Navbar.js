@@ -13,7 +13,7 @@ function Navbar() {
             alt="logo"
             className="h-12 w-12 mr-1"
           />
-          <span className="text-xl md:inline-block hidden">
+          <span className="text-xl lg:inline-block hidden">
             work<span className="font-bold">plus</span>
           </span>
         </div>
@@ -22,15 +22,15 @@ function Navbar() {
             <ItemNav {...e} key={e.href} />
           ))}
         </div>
-        <div className="flex flex-1 justify-end w-full items-center flex-col mb-2 md:py-10 py-2">
-          <div className="border-2 rounded-full md:w-16 md:h-16 w-12 h-12  border-solid border-gray-400 p-1">
+        <div className="flex flex-1 justify-end w-full items-center flex-col mb-2 lg:py-10 py-2">
+          <div className="border-2 rounded-full lg:w-16 lg:h-16 w-12 h-12  border-solid border-gray-400 p-1">
             <img
               src="https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=398"
               alt="avatar"
               className="w-full h-full rounded-full"
             />
           </div>
-          <Typography className="mt-2 md:block hidden" variant="subtitle2">
+          <Typography className="mt-2 lg:block hidden" variant="subtitle2">
             Nguyên Phạm
           </Typography>
         </div>
@@ -48,14 +48,14 @@ const ItemNav = ({ href = '', label = '', icon }) => {
   return (
     <Link
       to={href}
-      className={`no-underline flex items-center justify-center md:p-4 p-2 md:justify-start hover:text-primary-100  cursor-pointer border-l-transparent border-0 border-l-4 border-solid hover:border-l-primary-100 hover:bg-gray-100 ${
+      className={`no-underline flex items-center justify-center lg:p-4 p-2 lg:justify-start hover:text-primary-100  cursor-pointer border-l-transparent border-0 border-l-4 border-solid hover:border-l-primary-100 hover:bg-gray-100 ${
         match || (pathname === '/' && resolved.pathname === '/dashboard')
           ? 'text-primary-100  border-l-primary-100 '
           : 'text-gray-400  border-l-transparent'
       }`}
     >
       <div className="translate-y-0.5">{icon}</div>
-      <p className="whitespace-nowrap px-4 md:inline-block hidden my-0 font-semibold ">
+      <p className="whitespace-nowrap px-4 lg:inline-block hidden my-0 font-semibold ">
         {label}
       </p>
     </Link>

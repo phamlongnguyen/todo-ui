@@ -1,9 +1,8 @@
 import React from 'react';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useEffect } from 'react';
-import { Typography } from '@mui/material';
+import { Avatar, Box, Chip, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const ITEM_HEIGHT = 48;
@@ -21,14 +20,13 @@ const SelectCus = styled(Select)(({ multiple }) => ({
   minHeight: 20,
   width: 'fit-content',
   backgroundColor: '#EFEFEF',
+  borderRadius: 10,
+  marginLeft: 10,
   '>div': {
     display: 'flex',
     flexWrap: 'wrap',
     padding: multiple ? '8px' : '5px',
     minWidth: '100px',
-    '>div': {
-      padding: '0px 3px',
-    },
   },
 }));
 
@@ -60,17 +58,53 @@ function TSelect({
   };
   return (
     <SelectCus
-      labelId="demo-multiple-name-label"
-      id="demo-multiple-name"
+      displayEmpty
       multiple={isMultiple}
       value={personName}
       onChange={handleChange}
-      input={<OutlinedInput label="Name" />}
       MenuProps={MenuProps}
+      renderValue={(selected) => {
+        const newSelectd =
+          typeof selected === 'object'
+            ? selected.map((e) => options.find((el) => el.id === e))
+            : options.find((e) => e.id === selected);
+        return (
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+            {typeof selected === 'object' ? (
+              newSelectd?.map?.((value) => (
+                <Chip
+                  key={value.id}
+                  avatar={<Avatar alt="Natacha" src={value.icon} />}
+                  label={value[preifx]}
+                  variant="outlined"
+                />
+              ))
+            ) : (
+              <div className={`flex items-center `}>
+                {typeof newSelectd.icon === 'string' ? (
+                  <img
+                    loading="lazy"
+                    width="30"
+                    height="30"
+                    src={newSelectd.icon}
+                    alt={`Flag of ${newSelectd[preifx]}`}
+                    className="rounded-full"
+                  />
+                ) : (
+                  <div className="mx-2 translate-y-1"> {newSelectd.icon}</div>
+                )}
+                <Typography variant="subtitle2" className="ml-2">
+                  {newSelectd[preifx]}
+                </Typography>
+              </div>
+            )}
+          </Box>
+        );
+      }}
     >
       {options.map((c) => (
         <MenuItemCus key={c.id} value={c.id}>
-          <div className={`flex items-center ${isMultiple && 'sm:my-0 my-2'}`}>
+          <div className={`flex items-center ${isMultiple && 'sm:my-0 my-2 '}`}>
             {typeof c.icon === 'string' ? (
               <img
                 loading="lazy"

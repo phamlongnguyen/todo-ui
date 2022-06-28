@@ -14,7 +14,7 @@ function App() {
     <div className="flex w-full ">
       <BrowserRouter>
         <Navbar />
-        <div className="w-full overflow-y-auto bg-[#FCFCFC] pl-[70px] md:pl-[250px]">
+        <div className="w-full overflow-y-auto bg-[#FCFCFC] pl-[70px] lg:pl-[250px]">
           <Routes>
             <Route path="/" exact element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />

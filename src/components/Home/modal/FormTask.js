@@ -125,12 +125,12 @@ function FormTask({ open, handleClose = () => {} }) {
             <Grid item xs={12} className="mt-4">
               <Typography variant="subtitle2">Content</Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} className="pl-2">
               <TextareaAutosize
                 maxRows={4}
                 ref={contentRef}
                 defaultValue={config.data?.task?.content || ''}
-                className="w-full min-h-[100px] font-sans rounded-[10px] p-2 ml-2"
+                className="w-full min-h-[100px] font-sans rounded-[10px] p-2 "
               />
             </Grid>
 
@@ -140,7 +140,7 @@ function FormTask({ open, handleClose = () => {} }) {
                   <Grid item xs={12} className="mt-4">
                     <Typography variant="subtitle2">Priority</Typography>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} className="mt-1">
                     <Select
                       defaultValue={priority}
                       options={Object.values(PRIORITY_LIST)}
@@ -151,9 +151,9 @@ function FormTask({ open, handleClose = () => {} }) {
                 </Grid>
                 <Grid item xs={12} lg={6}>
                   <Grid item xs={12} className="mt-4">
-                    <Typography variant="subtitle2">Priority</Typography>
+                    <Typography variant="subtitle2">Estimate Time</Typography>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} className="mt-1">
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DateTimePicker
                         label=""
