@@ -1,9 +1,10 @@
 import { Typography } from '@mui/material';
 import React, { memo, useMemo } from 'react';
-import { formatDate } from '../../utils';
-import { PRIORITY_LIST } from '../../utils/constant';
-import PopupOption from './popup';
+import { PRIORITY_LIST } from '../../../utils/constant';
+
+import PopupOption from '../popup';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
+import { format } from 'date-fns';
 
 const ItemTask = memo(({ provided, snapshot, item, column }) => {
   const itemMemo = useMemo(() => item, [item]);
@@ -70,7 +71,7 @@ const InfoItem = memo(({ item }) => {
       </div>
       <div className="pl-4  pt-4 flex">
         <div className="whitespace-nowrap text-3xs text-gray-400">
-          {formatDate(item.estimateTime)}
+          {format(new Date(item.estimateTime), 'dd/MM/yyyy HH:mm:ss')}
         </div>
         <div className="pl-4">{PRIORITY_LIST[item.priority].icon}</div>
       </div>

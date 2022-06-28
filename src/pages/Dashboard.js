@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../components/Home/Header';
-import TaskPannel from '../components/Home/TaskPannel';
+import TaskPannel from '../components/Home/TaskPanel';
 
 function Dashboard() {
   return (

@@ -1,73 +1,12 @@
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { v4 as uuidv4 } from 'uuid';
 import React, { useEffect } from 'react';
 import { Typography } from '@mui/material';
-import { users } from '../../mock';
-import { sortByDateAndPriority } from '../../utils';
+import { mockTasks } from '../../../mock';
+import { sortByDateAndPriority } from '../../../utils';
 import ItemTask from './ItemTask';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { initTodo, updateColumns } from '../../store/reducer/columnsTask';
-
-const itemsFromBackend = [
-  {
-    id: uuidv4(),
-    content: 'First task First task First task',
-    title: 'First task First task First task',
-    estimateTime: '2022-05-11 15:33:20',
-    priority: 1,
-    assignee: users.slice(0, 2),
-  },
-
-  {
-    id: uuidv4(),
-    content: 'Second task',
-    title: 'Second task',
-    estimateTime: '2022-05-11 15:33:20',
-    priority: 2,
-    assignee: users.slice(1, 3),
-  },
-  {
-    id: uuidv4(),
-    content: 'Third task',
-    title: 'Third task',
-    estimateTime: '2022-05-11 15:33:20',
-    priority: 5,
-    assignee: users.slice(1, 4),
-  },
-  {
-    id: uuidv4(),
-    content: 'Fourth task',
-    title: 'Fourth task',
-    estimateTime: '2022-05-11 15:33:20',
-    priority: 4,
-    assignee: users.slice(0, 6),
-  },
-  {
-    id: uuidv4(),
-    content: 'Fifth task',
-    title: 'Fifth task',
-    estimateTime: '2022-05-11 15:33:20',
-    priority: 3,
-    assignee: users.slice(3, 5),
-  },
-  {
-    id: uuidv4(),
-    content: 'Six task',
-    title: 'Six task',
-    estimateTime: '2022-05-11 12:33:20',
-    priority: 3,
-    assignee: users.slice(3, 5),
-  },
-  {
-    id: uuidv4(),
-    content: 'Serven task',
-    title: 'Serven task',
-    estimateTime: '2022-05-11 5:33:20',
-    priority: 3,
-    assignee: users.slice(3, 5),
-  },
-];
+import { initTodo, updateColumns } from '../../../store/reducer/columnsTask';
 
 const onDragEnd = (result, columns) => {
   if (!result.destination) return;
@@ -118,9 +57,10 @@ function DropPanel() {
     dispatch(
       tempCol
         ? updateColumns(JSON.parse(tempCol))
-        : initTodo(sortByDateAndPriority(itemsFromBackend)),
+        : initTodo(sortByDateAndPriority(mockTasks)),
     );
   }, [dispatch]);
+
   return (
     <div className="w-full h-full">
       <div className="w-full h-full flex py-2">

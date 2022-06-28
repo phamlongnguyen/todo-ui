@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export const users = [
   {
     id: 1,
@@ -33,5 +35,65 @@ export const users = [
     id: 7,
     name: 'Laszlo Hanyecz',
     icon: 'https://imagesofcmsprod.s3.ap-southeast-1.amazonaws.com/Laszlo%20Hanyecz1636477102054.jpg',
+  },
+];
+
+export const mockTasks = [
+  {
+    id: uuidv4(),
+    content: 'First task First task First task',
+    title: 'First task First task First task',
+    estimateTime: '2022-05-11 15:33:20',
+    priority: 1,
+    assignee: users.slice(0, 2),
+  },
+
+  {
+    id: uuidv4(),
+    content: 'Second task',
+    title: 'Second task',
+    estimateTime: '2022-05-11 15:33:20',
+    priority: 2,
+    assignee: users.slice(1, 3),
+  },
+  {
+    id: uuidv4(),
+    content: 'Third task',
+    title: 'Third task',
+    estimateTime: '2022-05-11 15:33:20',
+    priority: 5,
+    assignee: users.slice(1, 4),
+  },
+  {
+    id: uuidv4(),
+    content: 'Fourth task',
+    title: 'Fourth task',
+    estimateTime: '2022-05-11 15:33:20',
+    priority: 4,
+    assignee: users.slice(0, 6),
+  },
+  {
+    id: uuidv4(),
+    content: 'Fifth task',
+    title: 'Fifth task',
+    estimateTime: '2022-05-11 15:33:20',
+    priority: 3,
+    assignee: users.slice(3, 5),
+  },
+  {
+    id: uuidv4(),
+    content: 'Six task',
+    title: 'Six task',
+    estimateTime: '2022-05-11 12:33:20',
+    priority: 3,
+    assignee: users.slice(3, 5),
+  },
+  {
+    id: uuidv4(),
+    content: 'Serven task',
+    title: 'Serven task',
+    estimateTime: '2022-05-11 5:33:20',
+    priority: 3,
+    assignee: users.slice(3, 5),
   },
 ];

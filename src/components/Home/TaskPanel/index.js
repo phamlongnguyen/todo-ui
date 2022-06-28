@@ -2,9 +2,9 @@ import styled from '@emotion/styled';
 import { Button, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { toggleOpenTask } from '../../store/reducer/config';
+import { toggleOpenTask } from '../../../store/reducer/config';
 import DropPanel from './DropPanel';
-import FormTask from './modal/FormTask';
+import FormTask from '../modal/FormTask';
 
 const ColorButton = styled(Button)(() => ({
   color: '#655BDC',

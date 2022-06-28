@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
-import TBreadcrumbs from '../common/TBreadcrumbs';
+import TBreadcrumbs from '../../common/TBreadcrumbs';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import DateRangeOutlinedIcon from '@mui/icons-material/DateRangeOutlined';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
