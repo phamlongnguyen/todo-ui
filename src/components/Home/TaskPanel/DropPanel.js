@@ -7,6 +7,8 @@ import ItemTask from './ItemTask';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { initTodo, updateColumns } from '../../../store/reducer/columnsTask';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import { toggleOpenTask } from '../../../store/reducer/config';
 
 const onDragEnd = (result, columns) => {
   if (!result.destination) return;
@@ -80,7 +82,7 @@ function DropPanel() {
                         <div
                           {...provided.droppableProps}
                           ref={provided.innerRef}
-                          className={`p-2 w-full h-full rounded pt-12 relative top-0 ${
+                          className={`p-2 w-full h-full rounded py-12 relative top-0 ${
                             snapshot.isDraggingOver
                               ? 'bg-violet-50'
                               : 'bg-gray-100'
@@ -92,6 +94,18 @@ function DropPanel() {
                           >
                             {column.name}
                           </Typography>
+                          <div
+                            className="w-full items-center justify-center absolute bottom-0 text-gray-500 h-12 flex cursor-pointer"
+                            onClick={() => dispatch(toggleOpenTask(true))}
+                          >
+                            <AddOutlinedIcon className="w-3 h-3" />
+                            <Typography
+                              variant="subtitle2"
+                              className="p-3 text-3xs   left-0 "
+                            >
+                              Add new Task
+                            </Typography>
+                          </div>
                           {column.items.map((item, index) => {
                             return (
                               <Draggable
@@ -112,6 +126,7 @@ function DropPanel() {
                               </Draggable>
                             );
                           })}
+
                           {provided.placeholder}
                         </div>
                       );

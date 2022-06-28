@@ -9,18 +9,33 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useDispatch } from 'react-redux';
 import { deleteTask } from '../../../store/reducer/columnsTask';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ConfirmPopup from './ConfirmPopup';
 import { openUpdateForm } from '../../../store/reducer/config';
+import { useSelector } from 'react-redux';
+
 function PopupOption({ anchorEl, handleClose = () => {}, item, column }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const isOpenTaskForm = useSelector((state) => state.config.isOpenTaskForm);
 
-  const toggleConfirmPopup = () => setOpen((prev) => !prev);
+  useEffect(() => {
+    if (!isOpenTaskForm) {
+      handleClose();
+    }
+  }, [isOpenTaskForm]);
+
+  const toggleConfirmPopup = () => {
+    setOpen((prev) => !prev);
+    if (open) {
+      handleClose();
+    }
+  };
 
   const handleDelete = () => {
     dispatch(deleteTask({ columnId: column.id, taskId: item.id }));
     setOpen(false);
+    handleClose();
   };
   return (
     <div>

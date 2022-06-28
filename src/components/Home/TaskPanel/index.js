@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { toggleOpenTask } from '../../../store/reducer/config';
 import DropPanel from './DropPanel';
 import FormTask from '../modal/FormTask';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 const ColorButton = styled(Button)(() => ({
   color: '#655BDC',
@@ -32,7 +33,8 @@ function TaskPannel() {
             dispatch(toggleOpenTask(true));
           }}
         >
-          Add new task
+          <AddOutlinedIcon className="w-4 h-4 " />{' '}
+          <span className="sm:block hidden ml-2">Add new task</span>
         </ColorButton>
         <FormTask
           open={config.isOpenTaskForm}

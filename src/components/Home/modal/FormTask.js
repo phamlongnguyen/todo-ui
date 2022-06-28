@@ -123,9 +123,7 @@ function FormTask({ open, handleClose = () => {} }) {
               />
             </Grid>
             <Grid item xs={12} className="mt-4">
-              <Typography variant="subtitle2">
-                Content <span className="text-red-600">*</span>
-              </Typography>
+              <Typography variant="subtitle2">Content</Typography>
             </Grid>
             <Grid item xs={12}>
               <TextareaAutosize
@@ -140,9 +138,7 @@ function FormTask({ open, handleClose = () => {} }) {
               <Grid container>
                 <Grid item xs={12} lg={6}>
                   <Grid item xs={12} className="mt-4">
-                    <Typography variant="subtitle2">
-                      Priority <span className="text-red-600">*</span>
-                    </Typography>
+                    <Typography variant="subtitle2">Priority</Typography>
                   </Grid>
                   <Grid item xs={12}>
                     <Select
@@ -155,9 +151,7 @@ function FormTask({ open, handleClose = () => {} }) {
                 </Grid>
                 <Grid item xs={12} lg={6}>
                   <Grid item xs={12} className="mt-4">
-                    <Typography variant="subtitle2">
-                      Priority <span className="text-red-600">*</span>
-                    </Typography>
+                    <Typography variant="subtitle2">Priority</Typography>
                   </Grid>
                   <Grid item xs={12}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -179,9 +173,7 @@ function FormTask({ open, handleClose = () => {} }) {
               </Grid>
             </Grid>
             <Grid item xs={12} className="mt-4">
-              <Typography variant="subtitle2">
-                Assignees <span className="text-red-600">*</span>
-              </Typography>
+              <Typography variant="subtitle2">Assignees</Typography>
             </Grid>
             <Grid item xs={12}>
               <Select
