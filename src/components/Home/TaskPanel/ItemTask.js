@@ -4,7 +4,7 @@ import { PRIORITY_LIST } from '../../../utils/constant';
 
 import PopupOption from '../popup';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
-import { format } from 'date-fns';
+import moment from 'moment';
 
 const ItemTask = memo(({ provided, snapshot, item, column }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -77,7 +77,7 @@ const InfoItem = memo(({ item }) => {
       </div>
       <div className="pl-4  pt-4 flex">
         <div className="whitespace-nowrap text-3xs text-gray-400">
-          {format(new Date(item.estimateTime), 'dd/MM/yyyy HH:mm:ss')}
+          {moment(item?.estimateTime).format('DD/MM/yyyy HH:mm:ss')}
         </div>
         <div className="pl-4">{PRIORITY_LIST[item.priority].icon}</div>
       </div>

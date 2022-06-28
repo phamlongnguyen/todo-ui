@@ -92,7 +92,7 @@ export const mockTasks = [
     id: uuidv4(),
     content: 'Serven task',
     title: 'Serven task',
-    estimateTime: '2022-05-11 5:33:20',
+    estimateTime: '2022-05-11 05:33:20',
     priority: 3,
     assignee: users.slice(3, 5),
   },
