@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material';
-import React, { memo, useMemo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { PRIORITY_LIST } from '../../../utils/constant';
 
 import PopupOption from '../popup';
@@ -7,15 +7,20 @@ import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import { format } from 'date-fns';
 
 const ItemTask = memo(({ provided, snapshot, item, column }) => {
-  const itemMemo = useMemo(() => item, [item]);
-
   const [anchorEl, setAnchorEl] = React.useState(null);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+
+  const handleClose = useCallback(() => {
     setAnchorEl(null);
-  };
+  }, []);
+
+  const itemMemo = useMemo(() => item, [item]);
+  const anchorElMemo = useMemo(() => anchorEl, [anchorEl]);
+  const columnMemo = useMemo(() => column, [column]);
+
   return (
     <div
       ref={provided.innerRef}
@@ -34,10 +39,10 @@ const ItemTask = memo(({ provided, snapshot, item, column }) => {
       <div className="flex justify-between">
         <Typography variant="subtitle1 truncate"> {item.title}</Typography>
         <PopupOption
-          anchorEl={anchorEl}
+          anchorEl={anchorElMemo}
           handleClose={handleClose}
-          item={item}
-          column={column}
+          item={itemMemo}
+          column={columnMemo}
         />
         <div className="pl-4">
           <MoreHorizRoundedIcon onClick={handleClick} />
@@ -53,6 +58,7 @@ export default ItemTask;
 const InfoItem = memo(({ item }) => {
   const listAssignees =
     item.assignee.length >= 2 ? item.assignee.slice(0, 2) : item.assignee;
+
   return (
     <div className="flex justify-between flex-wrap ">
       <div className="flex  pt-4">

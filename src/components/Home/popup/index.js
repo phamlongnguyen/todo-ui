@@ -9,7 +9,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useDispatch } from 'react-redux';
 import { deleteTask } from '../../../store/reducer/columnsTask';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import ConfirmPopup from './ConfirmPopup';
 import { openUpdateForm } from '../../../store/reducer/config';
 import { useSelector } from 'react-redux';
@@ -18,12 +18,11 @@ function PopupOption({ anchorEl, handleClose = () => {}, item, column }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const isOpenTaskForm = useSelector((state) => state.config.isOpenTaskForm);
-
   useEffect(() => {
     if (!isOpenTaskForm) {
       handleClose();
     }
-  }, [isOpenTaskForm]);
+  }, [isOpenTaskForm, handleClose]);
 
   const toggleConfirmPopup = () => {
     setOpen((prev) => !prev);
@@ -80,4 +79,4 @@ function PopupOption({ anchorEl, handleClose = () => {}, item, column }) {
   );
 }
 
-export default PopupOption;
+export default memo(PopupOption);
